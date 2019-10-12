@@ -1,9 +1,11 @@
 # add the sources here
-set(sources
-    main.cpp
-    system_stm32f4xx.c
-    startup_stm32f40_41xxx.s
-)
+file(GLOB_RECURSE sources
+  *.c
+  *.cpp
+  )
+
+HEADER_DIRECTORIES(includes_local)
+#message(${includes_local})
 
 # GCC optimization level: use -O0 in debug build, otherwise -O2
 if(CMAKE_BUILD_TYPE MATCHES Debug)
@@ -24,6 +26,8 @@ add_executable(${elf_file} ${sources})
 
 # link StdPeriph library to project
 target_link_libraries(${elf_file} PUBLIC stm32f4xx)
+target_include_directories(${elf_file} PUBLIC includes)
+target_include_directories(${elf_file} PUBLIC includes_local)
 
 # set additional for compiler and linker: optimization and generate map file
 set(additional_compiler_flags ${opt_level})
